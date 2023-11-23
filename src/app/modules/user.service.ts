@@ -57,7 +57,23 @@ const getOrdersByUserId = async (id: number) => {
     const result = await User.findOne({ userId: id }, { orders: 1 });
     return result;
   } else {
-    throw new Error('Order(s) not found!');
+    throw new Error('User not found!');
+  }
+};
+
+const getTotalOrderPrice = async (id: number) => {
+  if (await User.userExists(id)) {
+    const user = await User.findOne({ userId: id });
+
+    if (user && user.orders && user.orders.length > 0) {
+      const result = await User.aggregate([
+        { $match: { userId: id } },
+        { $unwind: '$orders' },
+        { $group: { _id: null, totalPrice: { $sum: '$orders.price' } } },
+        { $project: { totalPrice: 1 } },
+      ]);
+      return result[0].totalPrice;
+    }
   }
 };
 
@@ -69,4 +85,5 @@ export const userServices = {
   deleteUserById,
   addNewOrder,
   getOrdersByUserId,
+  getTotalOrderPrice,
 };

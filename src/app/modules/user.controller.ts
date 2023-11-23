@@ -159,7 +159,34 @@ const getOrdersByUserId = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.json({
       success: false,
-      message: 'Orders Not Found',
+      message: 'User Not Found',
+      error: {
+        code: 404,
+        description: error.message,
+      },
+    });
+  }
+};
+
+const getTotalOrderPrice = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    const result = await userServices.getTotalOrderPrice(Number(userId));
+    if (result) {
+      res.json({
+        success: true,
+        message: 'Total price calculated successfully!',
+        data: {
+          totalPrice: result,
+        },
+      });
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.json({
+      success: false,
+      message: 'User Not Found',
       error: {
         code: 404,
         description: error.message,
@@ -175,4 +202,5 @@ export const userController = {
   deleteUserById,
   addNewOrder,
   getOrdersByUserId,
+  getTotalOrderPrice,
 };
