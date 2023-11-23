@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, json } from 'express';
 import { userServices } from './user.service';
 
 const createNewUser = async (req: Request, res: Response) => {
@@ -64,8 +64,34 @@ const getUserById = async (req: Request, res: Response) => {
   }
 };
 
+const updateUserInfo = async (req: Request, res: Response) => {
+  try {
+    const { user: userData } = req.body;
+
+    const { userId: id } = req.params;
+
+    const result = await userServices.updateUserInfo(userData, Number(id));
+
+    res.json({
+      success: true,
+      message: 'User updated successfully!',
+      data: result,
+    });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
+    });
+  }
+};
 export const userController = {
   getAllUsers,
   createNewUser,
   getUserById,
+  updateUserInfo,
 };
