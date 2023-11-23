@@ -52,6 +52,15 @@ const addNewOrder = async (orderData: TOrders, id: number) => {
   return result;
 };
 
+const getOrdersByUserId = async (id: number) => {
+  if (await User.userExists(id)) {
+    const result = await User.findOne({ userId: id }, { orders: 1 });
+    return result;
+  } else {
+    throw new Error('Order(s) not found!');
+  }
+};
+
 export const userServices = {
   getAllUsers,
   createNewUser,
@@ -59,4 +68,5 @@ export const userServices = {
   updateUserInfo,
   deleteUserById,
   addNewOrder,
+  getOrdersByUserId,
 };

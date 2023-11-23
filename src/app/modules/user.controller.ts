@@ -119,7 +119,7 @@ const deleteUserById = async (req: Request, res: Response) => {
 const addNewOrder = async (req: Request, res: Response) => {
   const { userId } = req.params;
   const data = req.body;
-  console.log(userId, data);
+
   try {
     const result = await userServices.addNewOrder(data, Number(userId));
 
@@ -142,6 +142,31 @@ const addNewOrder = async (req: Request, res: Response) => {
     });
   }
 };
+
+const getOrdersByUserId = async (req: Request, res: Response) => {
+  try {
+    const { userId: id } = req.params;
+
+    const result = await userServices.getOrdersByUserId(Number(id));
+    if (result) {
+      res.json({
+        success: true,
+        message: 'Order fetched successfully!',
+        data: result,
+      });
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.json({
+      success: false,
+      message: 'Orders Not Found',
+      error: {
+        code: 404,
+        description: error.message,
+      },
+    });
+  }
+};
 export const userController = {
   getAllUsers,
   createNewUser,
@@ -149,4 +174,5 @@ export const userController = {
   updateUserInfo,
   deleteUserById,
   addNewOrder,
+  getOrdersByUserId,
 };
