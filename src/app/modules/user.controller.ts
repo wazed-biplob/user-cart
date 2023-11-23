@@ -1,4 +1,4 @@
-import { Request, Response, json } from 'express';
+import { Request, Response } from 'express';
 import { userServices } from './user.service';
 
 const createNewUser = async (req: Request, res: Response) => {
@@ -15,8 +15,9 @@ const createNewUser = async (req: Request, res: Response) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
-      code: 404,
-      description: error.message,
+      success: false,
+      message: error.message,
+      error: { code: 404, description: error.message },
     });
   }
 };

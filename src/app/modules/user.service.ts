@@ -2,6 +2,9 @@ import { TUser } from './user.interface';
 import { User } from './user.model';
 
 const createNewUser = async (userData: TUser) => {
+  if (await User.userExists(userData.userId)) {
+    throw new Error('User Already Exists!');
+  }
   const result = await User.create(userData);
   return result;
 };
@@ -9,12 +12,20 @@ const getAllUsers = async () => {
   const result = await User.find();
   return result;
 };
+
 const getUserById = async (id: number) => {
-  const result = await User.findOne({ userId: id });
-  return result;
+  if (await User.userExists(id)) {
+    const result = await User.findOne({ userId: id });
+    return result;
+  } else {
+    throw new Error('User no found!');
+  }
 };
 
 const updateUserInfo = async (userData: TUser, id: number) => {
+  if (await User.userExists(id)) {
+    throw new Error('User Already Exists');
+  }
   const result = await User.findOneAndUpdate(
     { userId: id },
     { $set: userData },
