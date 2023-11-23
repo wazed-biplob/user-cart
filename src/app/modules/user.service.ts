@@ -9,8 +9,12 @@ const getAllUsers = async () => {
   const result = await User.find();
   return result;
 };
-
+const getUserById = async (id: number) => {
+  const result = await User.findOne({ userId: id });
+  return result;
+};
 export const userServices = {
   getAllUsers,
   createNewUser,
+  getUserById,
 };

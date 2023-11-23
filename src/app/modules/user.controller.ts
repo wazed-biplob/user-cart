@@ -4,7 +4,7 @@ import { userServices } from './user.service';
 const createNewUser = async (req: Request, res: Response) => {
   try {
     const { user: userData } = req.body;
-    console.log(userData);
+
     const result = await userServices.createNewUser(userData);
 
     res.json({
@@ -15,9 +15,8 @@ const createNewUser = async (req: Request, res: Response) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
-      success: false,
-      message: error.message,
-      error: `Error Message : ` + error,
+      code: 404,
+      description: error.message,
     });
   }
 };
@@ -43,7 +42,30 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+const getUserById = async (req: Request, res: Response) => {
+  try {
+    const { userId: id } = req.params;
+
+    const result = await userServices.getUserById(Number(id));
+    res.json({
+      success: true,
+      message: 'User fetched successfully!',
+      data: result,
+    });
+  } catch (error) {
+    res.json({
+      success: false,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
+    });
+  }
+};
+
 export const userController = {
   getAllUsers,
   createNewUser,
+  getUserById,
 };
