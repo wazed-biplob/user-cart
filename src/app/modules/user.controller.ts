@@ -115,10 +115,38 @@ const deleteUserById = async (req: Request, res: Response) => {
     });
   }
 };
+
+const addNewOrder = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  const data = req.body;
+  console.log(userId, data);
+  try {
+    const result = await userServices.addNewOrder(data, Number(userId));
+
+    if (result) {
+      res.json({
+        success: true,
+        message: 'Order created successfully!',
+        data: null,
+      });
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.json({
+      success: false,
+      message: 'Something went wrong!',
+      error: {
+        code: 500,
+        description: error.message,
+      },
+    });
+  }
+};
 export const userController = {
   getAllUsers,
   createNewUser,
   getUserById,
   updateUserInfo,
   deleteUserById,
+  addNewOrder,
 };

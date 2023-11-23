@@ -14,7 +14,7 @@ export interface TAddress {
 export interface TOrders {
   productName: string;
   price: number;
-  quanity: number;
+  quantity: number;
 }
 export interface TUser {
   userId: number;
@@ -25,7 +25,7 @@ export interface TUser {
   isActive: boolean;
   hobbies: string[];
   address: TAddress;
-  orders?: TOrders;
+  orders?: TOrders[];
 }
 
 export interface UserModel extends Model<TUser> {

@@ -47,7 +47,7 @@ const addressSchema = new Schema<TAddress>({
 const ordersSchema = new Schema<TOrders>({
   productName: { type: String },
   price: { type: Number },
-  quanity: { type: Number },
+  quantity: { type: Number },
 });
 
 const userSchema = new Schema<TUser, UserModel>({
@@ -59,7 +59,7 @@ const userSchema = new Schema<TUser, UserModel>({
   isActive: { type: Boolean, required: true },
   hobbies: { type: [String] },
   address: { type: addressSchema, required: true },
-  orders: { type: ordersSchema },
+  orders: { type: [ordersSchema] },
 });
 
 userSchema.statics.userExists = async function (id: number) {
