@@ -18,7 +18,7 @@ const getUserById = async (id: number) => {
     const result = await User.findOne({ userId: id });
     return result;
   } else {
-    throw new Error('User no found!');
+    throw new Error('User not found!');
   }
 };
 
@@ -34,9 +34,19 @@ const updateUserInfo = async (userData: TUser, id: number) => {
   return result;
 };
 
+const deleteUserById = async (id: number) => {
+  if (await User.userExists(id)) {
+    const result = await User.deleteOne({ userId: id });
+    return result;
+  } else {
+    throw new Error('User not found!');
+  }
+};
+
 export const userServices = {
   getAllUsers,
   createNewUser,
   getUserById,
   updateUserInfo,
+  deleteUserById,
 };

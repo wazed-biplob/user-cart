@@ -53,13 +53,14 @@ const getUserById = async (req: Request, res: Response) => {
       message: 'User fetched successfully!',
       data: result,
     });
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     res.json({
       success: false,
       message: 'User not found',
       error: {
         code: 404,
-        description: 'User not found!',
+        description: error.message,
       },
     });
   }
@@ -85,7 +86,31 @@ const updateUserInfo = async (req: Request, res: Response) => {
       message: 'User not found',
       error: {
         code: 404,
-        description: 'User not found!',
+        description: error.message,
+      },
+    });
+  }
+};
+
+const deleteUserById = async (req: Request, res: Response) => {
+  try {
+    const { userId: id } = req.params;
+    const result = await userServices.deleteUserById(Number(id));
+    if (result.deletedCount) {
+      res.json({
+        success: true,
+        message: 'User deleted successfully!',
+        data: null,
+      });
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    res.json({
+      success: false,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: error.message,
       },
     });
   }
@@ -95,4 +120,5 @@ export const userController = {
   createNewUser,
   getUserById,
   updateUserInfo,
+  deleteUserById,
 };
