@@ -17,7 +17,7 @@ This project demonstrates basic CRUD operations using Moongoose Schema with Type
 
 ## Description
 
-I've developed a Node.js Express application with TypeScript, integrating MongoDB with Mongoose for user data and order management. I have ensured data integrity through validation using Zod.
+I've developed a Node Express application with TypeScript, integrating MongoDB with Mongoose for user data and order management. I have ensured data integrity through validation using Zod.
 
 ## Environment Variables
 
@@ -29,9 +29,9 @@ To run this project, you will need to add the following environment variables to
 
 `SALT_ROUND`
 
-## Installation
+## Local Installation
 
-Download This Project, Go to the Project Folder with CLI, and Run the below-written command :
+Download This Project directly or clone it with git command in your CLI, then Go to the Project Folder, and Run the below-written command in the CLI :
 
 ```bash
   npm install
