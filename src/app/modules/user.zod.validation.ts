@@ -41,7 +41,7 @@ export const ordersZodSchema = z.object({
 
 export const userZodSchema = z.object({
   userId: z.number(),
-  userName: z.string(),
+  username: z.string(),
   password: z.string(),
   fullName: userNameZodSchema,
   age: z.number(),
