@@ -52,8 +52,9 @@ const ordersSchema = new Schema<TOrders>({
 
 const userSchema = new Schema<TUser, UserModel>({
   userId: { type: Number, required: [true, 'ID is required'], unique: true },
-  userName: { type: userNameSchema, required: true },
+  userName: { type: String, required: [true, 'User Name is Required'] },
   password: { type: String, required: [true, 'Password is required'] },
+  fullName: { type: userNameSchema, required: true },
   age: { type: Number, required: true },
   email: { type: String, required: true, unique: true },
   isActive: { type: Boolean, required: true },

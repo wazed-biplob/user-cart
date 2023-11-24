@@ -18,8 +18,9 @@ export interface TOrders {
 }
 export interface TUser {
   userId: number;
-  userName: TUserName;
+  userName: string;
   password: string;
+  fullName: TUserName;
   age: number;
   email: string;
   isActive: boolean;

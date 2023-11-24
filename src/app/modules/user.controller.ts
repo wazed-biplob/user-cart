@@ -1,11 +1,14 @@
 import { Request, Response } from 'express';
 import { userServices } from './user.service';
+import { ordersZodSchema, userZodSchema } from './user.zod.validation';
 
 const createNewUser = async (req: Request, res: Response) => {
   try {
-    const { user: userData } = req.body;
+    const userData = req.body;
 
-    const result = await userServices.createNewUser(userData);
+    const parsedData = userZodSchema.parse(userData);
+
+    const result = await userServices.createNewUser(parsedData);
 
     res.json({
       success: true,
@@ -121,7 +124,8 @@ const addNewOrder = async (req: Request, res: Response) => {
   const data = req.body;
 
   try {
-    const result = await userServices.addNewOrder(data, Number(userId));
+    const parsedData = ordersZodSchema.parse(data);
+    const result = await userServices.addNewOrder(parsedData, Number(userId));
 
     if (result) {
       res.json({
