@@ -52,18 +52,25 @@ const ordersSchema = new Schema<TOrders>({
   quantity: { type: Number },
 });
 
-const userSchema = new Schema<TUser, UserModel>({
-  userId: { type: Number, required: [true, 'ID is required'], unique: true },
-  userName: { type: String, required: [true, 'User Name is Required'] },
-  password: { type: String, required: [true, 'Password is required'] },
-  fullName: { type: userNameSchema, required: true },
-  age: { type: Number, required: true },
-  email: { type: String, required: true, unique: true },
-  isActive: { type: Boolean, required: true },
-  hobbies: { type: [String] },
-  address: { type: addressSchema, required: true },
-  orders: { type: [ordersSchema] },
-});
+const userSchema = new Schema<TUser, UserModel>(
+  {
+    userId: { type: Number, required: [true, 'ID is required'], unique: true },
+    userName: { type: String, required: [true, 'User Name is Required'] },
+    password: { type: String, required: [true, 'Password is required'] },
+    fullName: { type: userNameSchema, required: true },
+    age: { type: Number, required: true },
+    email: { type: String, required: true, unique: true },
+    isActive: { type: Boolean, required: true },
+    hobbies: { type: [String], required: true },
+    address: { type: addressSchema, required: true },
+    orders: { type: [ordersSchema] },
+  },
+  {
+    toObject: {
+      virtuals: true,
+    },
+  }
+);
 
 userSchema.statics.userExists = async function (id: number) {
   const existingUser = User.findOne({ userId: id });
@@ -72,6 +79,11 @@ userSchema.statics.userExists = async function (id: number) {
 
 userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, Number(config.salt_round));
+  next();
+});
+
+userSchema.post('save', function (doc, next) {
+  doc.set('password', undefined);
   next();
 });
 

@@ -9,13 +9,13 @@ const createNewUser = async (userData: TUser) => {
   return result;
 };
 const getAllUsers = async () => {
-  const result = await User.find();
+  const result = await User.find().select('-password');
   return result;
 };
 
 const getUserById = async (id: number) => {
   if (await User.userExists(id)) {
-    const result = await User.findOne({ userId: id });
+    const result = await User.findOne({ userId: id }).select('-password');
     return result;
   } else {
     throw new Error('User not found!');

@@ -49,5 +49,5 @@ export const userZodSchema = z.object({
   isActive: z.boolean(),
   hobbies: z.array(z.string()),
   address: addressZodSchema,
-  orders: z.array(ordersZodSchema),
+  orders: z.array(ordersZodSchema).optional(),
 });
