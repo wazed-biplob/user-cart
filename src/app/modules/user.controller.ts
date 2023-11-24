@@ -71,11 +71,11 @@ const getUserById = async (req: Request, res: Response) => {
 
 const updateUserInfo = async (req: Request, res: Response) => {
   try {
-    const { user: userData } = req.body;
+    const userData = req.body;
 
     const { userId: id } = req.params;
-
-    const result = await userServices.updateUserInfo(userData, Number(id));
+    const parsedData = userZodSchema.parse(userData);
+    const result = await userServices.updateUserInfo(parsedData, Number(id));
 
     res.json({
       success: true,

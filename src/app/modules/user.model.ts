@@ -6,6 +6,8 @@ import {
   TUserName,
   UserModel,
 } from './user.interface';
+import bcrypt from 'bcrypt';
+import config from '../config';
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -67,5 +69,10 @@ userSchema.statics.userExists = async function (id: number) {
   const existingUser = User.findOne({ userId: id });
   return existingUser;
 };
+
+userSchema.pre('save', async function (next) {
+  this.password = await bcrypt.hash(this.password, Number(config.salt_round));
+  next();
+});
 
 export const User = model<TUser, UserModel>('user', userSchema);
